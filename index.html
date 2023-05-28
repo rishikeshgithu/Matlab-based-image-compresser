@@ -5,5 +5,25 @@
 <script src="index.js"></script>
 <body>
   <button class="button">Click here to Download</button>
+  <p1>
+FFT (Fast Fourier Transform) image compression is a lossless compression technique used to reduce the size of images while preserving their quality.
+
+FFT compression is based on the principle that natural images have most of their energy concentrated in the lower frequency range, while higher frequencies contain less important details.
+
+The compression process involves converting the image from the spatial domain to the frequency domain using the FFT algorithm. This transformation represents the image as a combination of different frequency components.
+
+In the frequency domain, the high-frequency components (representing fine details) can be discarded or reduced, resulting in a smaller representation of the image.
+
+By applying a threshold or selecting a subset of the frequency coefficients, FFT compression eliminates high-frequency information and retains the lower-frequency components, effectively reducing the image size.
+
+One advantage of FFT compression is its ability to achieve high compression ratios without significant loss of visual quality, making it suitable for applications where preserving image fidelity is crucial.
+
+FFT compression is commonly used in medical imaging, satellite imaging, and other applications where precise representation and analysis of images are required.
+
+The decompression process involves converting the compressed frequency domain representation back to the spatial domain using the inverse FFT (IFFT) algorithm, reconstructing the image.
+
+Since FFT compression is a lossless technique, the reconstructed image is an exact replica of the original image, ensuring no loss of information during compression and decompression.
+
+While FFT compression excels in preserving image quality, it may not achieve as high compression ratios as lossy compression techniques. In scenarios where storage space is a major concern, lossy compression methods may be more suitable.</p1>
 </body>
 </html>

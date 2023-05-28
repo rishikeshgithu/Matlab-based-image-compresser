@@ -29,13 +29,6 @@ display: block;
 width: 200px;
 margin: auto;
 }
-body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
     .button {
       padding: 10px 20px;
       background-color: #4CAF50;
