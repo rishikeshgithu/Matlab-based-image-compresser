@@ -1,4 +1,4 @@
-function ProjectAlpha06()
+function ProjectAlpha07()
     % Create a figure window
     fig = figure('Name', 'Image Compression GUI', 'Position', [100 100 800 400], 'SizeChangedFcn', @(src,~) resizeGUI(src), 'Resize', 'off', 'WindowStyle', 'normal', 'WindowButtonDownFcn', @(src,~) disableMaximize(src));
 
@@ -12,17 +12,20 @@ function ProjectAlpha06()
     % Create a button for compressing the image
     compressButton = uicontrol(fig, 'Style', 'pushbutton', 'String', 'Compress Image',...
         'Position', [500 200 120 30], 'Callback', @compressImage, 'Tooltip', 'Click to compress the image');
-    
+
     % Create a button for uploading an image
     uploadButton = uicontrol(fig, 'Style', 'pushbutton', 'String', 'Upload Image',...
         'Position', [500 150 120 30], 'Callback', @uploadImage, 'Tooltip', 'Click to upload an image');
 
     % Create labels and titles
-    uicontrol(fig, 'Style', 'text', 'String', 'Image Compresser', 'Position', [300 380 200 20], 'FontWeight', 'bold', 'FontSize', 14);
+    uicontrol(fig, 'Style', 'text', 'String', 'Image Compressor', 'Position', [300 380 200 20], 'FontWeight', 'bold', 'FontSize', 14);
+    originalSizeLabel = uicontrol(fig, 'Style', 'text', 'String', '', 'Position', [600 350 200 20]);
+    compressedSizeLabel = uicontrol(fig, 'Style', 'text', 'String', '', 'Position', [600 320 200 20]);
+    spaceSavedLabel = uicontrol(fig, 'Style', 'text', 'String', '', 'Position', [600 290 200 20]);
 
     % Load the default image
     img = imread('image.jpeg');
-    
+
     % Display the original image
     axes(axesOriginal);
     imshow(img);
@@ -83,6 +86,17 @@ function ProjectAlpha06()
             % Save the compressed image to a file in JPEG format
             imwrite(img_compressed, 'image_compressed.jpg', 'JPEG');
 
+            % Calculate file sizes
+            originalSize = dir('image.jpeg').bytes;
+            compressedSize = dir('image_compressed.jpg').bytes;
+
+            % Update the size labels
+            originalSizeLabel.String = sprintf('Original Size: %d bytes', originalSize);
+            compressedSizeLabel.String = sprintf('Compressed Size: %d bytes', compressedSize);
+
+            % Calculate space saved
+            spaceSaved = originalSize - compressedSize;
+            spaceSavedLabel.String = sprintf('Space Saved: %d bytes', spaceSaved);
         catch
             errordlg('Error occurred during compression.', 'Compression Error', 'modal');
         end
@@ -90,43 +104,40 @@ function ProjectAlpha06()
 
     % Callback function for the uploadButton
     function uploadImage(~, ~)
-        % Open a file dialog to choose an image file
-        [filename, filepath] = uigetfile({'*.jpg;*.png;*.jpeg', 'Image files (*.jpg, *.png, *.jpeg)'}, 'Select an Image');
-        
-        if isequal(filename, 0) || isequal(filepath, 0)
-            % User canceled the file selection
-            return;
+        [filename, path] = uigetfile({'*.jpg;*.jpeg;*.png;*.bmp', 'Image Files (*.jpg, *.jpeg, *.png, *.bmp)'}, 'Select Image');
+        if filename ~= 0
+            img = imread(fullfile(path, filename));
+            axes(axesOriginal);
+            imshow(img);
+            title('Original Image');
         end
-        
-        % Read the selected image
-        img = imread(fullfile(filepath, filename));
-        
-        % Display the original image
-        axes(axesOriginal);
-        imshow(img);
-        title('Original Image');
     end
 
     % Resize GUI elements when the figure is resized or maximized
     function resizeGUI(src)
         % Get the current figure size
         figPos = src.Position;
-        
+
         % Update the panel position
         panel.Position = [0.05 0.1 0.4*figPos(3)/800 0.8];
-        
-        % Update the buttons position
+
+        % Update the button positions
         compressButton.Position = [500*figPos(3)/800 200*figPos(4)/400 120*figPos(3)/800 30*figPos(4)/400];
         uploadButton.Position = [500*figPos(3)/800 150*figPos(4)/400 120*figPos(3)/800 30*figPos(4)/400];
-        
+
         % Update the axes positions
         axesOriginal.Position = [0 0 0.5*figPos(3)/800 1*figPos(4)/400];
         axesCompressed.Position = [0.5*figPos(3)/800 0 0.5*figPos(3)/800 1*figPos(4)/400];
-        
+
+        % Update the label positions
+        originalSizeLabel.Position = [600*figPos(3)/800 350*figPos(4)/400 200*figPos(3)/800 20*figPos(4)/400];
+        compressedSizeLabel.Position = [600*figPos(3)/800 320*figPos(4)/400 200*figPos(3)/800 20*figPos(4)/400];
+        spaceSavedLabel.Position = [600*figPos(3)/800 290*figPos(4)/400 200*figPos(3)/800 20*figPos(4)/400];
+
         % Update the label positions
         uicontrol(fig, 'Style', 'text', 'String', 'Original Image', 'Position', [60*figPos(3)/800 370*figPos(4)/400 120*figPos(3)/800 20*figPos(4)/400], 'FontWeight', 'bold');
         uicontrol(fig, 'Style', 'text', 'String', 'Compressed Image', 'Position', [400*figPos(3)/800 370*figPos(4)/400 120*figPos(3)/800 20*figPos(4)/400], 'FontWeight', 'bold');
-        uicontrol(fig, 'Style', 'text', 'String', 'Image Compression GUI', 'Position', [300*figPos(3)/800 380*figPos(4)/400 200*figPos(3)/800 20*figPos(4)/400], 'FontWeight', 'bold', 'FontSize', 14);
+        uicontrol(fig, 'Style', 'text', 'String', 'Image Compressor', 'Position', [300*figPos(3)/800 380*figPos(4)/400 200*figPos(3)/800 20*figPos(4)/400], 'FontWeight', 'bold', 'FontSize', 14);
     end
 
     % Function to disable the maximize button
