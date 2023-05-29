@@ -1,6 +1,7 @@
 function ProjectAlpha07()
     % Create a figure window
     fig = figure('Name', 'Image Compression GUI', 'Position', [100 100 800 400], 'SizeChangedFcn', @(src,~) resizeGUI(src), 'Resize', 'off', 'WindowStyle', 'normal', 'WindowButtonDownFcn', @(src,~) disableMaximize(src));
+    
 
     % Create a panel to hold the image display
     panel = uipanel(fig, 'Position', [0.05 0.1 0.4 0.8]);
